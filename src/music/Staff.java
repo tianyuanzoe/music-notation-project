@@ -16,6 +16,7 @@ public class Staff extends Mass {
     public Sys sys;
     public int iStaff;
     public Staff.Fmt fmt;
+    public Clef initialClef = new Clef(null,this,Clef.INITIALX);
     public Staff(Sys sys,int iStaff,Staff.Fmt fmt){
         super("BACK");
         this.sys = sys;
@@ -130,6 +131,54 @@ public class Staff extends Mass {
             public void act(Gesture gest) {
                 Time t = Staff.this.sys.getTime(gest.vs.xL());
                 (new Rest(Staff.this,t)).incFlag();
+
+            }
+        });
+        addReaction(new Reaction("SW-SE") {//g clef
+            @Override
+            public int bid(Gesture gest) {
+                int yG = gest.vs.yM(),y1 = Staff.this.yTop(),y2 = Staff.this.yBot();
+                if(yG > y2 || yG < y1){
+                    return UC.noBid;
+                }
+               int d = Math.abs(y1 - gest.vs.yL()) + Math.abs(y2 - gest.vs.yH());
+                if(d > 100){
+                    return  UC.noBid;
+                }
+                return d;
+            }
+
+            @Override
+            public void act(Gesture gest) {
+                if(Staff.this.initialClef.glyph == null){
+                    Clef.setInitialClefs(Staff.this,Glyph.CLEF_G);
+                }else{
+                    new Clef(Glyph.CLEF_G,Staff.this,gest.vs.xM());
+                }
+
+            }
+        });
+        addReaction(new Reaction("SE-SW") {//F clef
+            @Override
+            public int bid(Gesture gest) {
+                int yG = gest.vs.yM(),y1 = Staff.this.yTop(),y2 = Staff.this.yBot();
+                if(yG > y2 || yG < y1){
+                    return UC.noBid;
+                }
+                int d = Math.abs(y1 - gest.vs.yL()) + Math.abs(y2 - gest.vs.yH());
+                if(d > 100){
+                    return  UC.noBid;
+                }
+                return d;
+            }
+
+            @Override
+            public void act(Gesture gest) {
+                if(Staff.this.initialClef.glyph == null){
+                    Clef.setInitialClefs(Staff.this,Glyph.CLEF_F);
+                }else{
+                    new Clef(Glyph.CLEF_F,Staff.this,gest.vs.xM());
+                }
 
             }
         });

@@ -43,9 +43,9 @@ public class Page extends Mass {
                         @Override
                         public int bid(Gesture gest) {
                             int y = gest.vs.yM();
-                            int yBot = PAGE.sysTop(PAGE.sysList.size() - 1);
+                            int yBot = PAGE.sysTop(PAGE.sysList.size() - 1) + sysFmt.height();
                             System.out.println("yBot = " + yBot);
-                            if(y < yBot){
+                            if(y < yBot + 20){
                                 return UC.noBid;
                             }
                             return 500; // don't outbid Sys E-E
@@ -55,8 +55,8 @@ public class Page extends Mass {
                         public void act(Gesture gest) {
                             int y = gest.vs.yM();
                             if(PAGE.sysList.size() == 1){
-                                //PAGE.sysGap = y - PAGE.margins.top - sysFmt.height();
-                                PAGE.sysGap = y - PAGE.margins.top;
+                                PAGE.sysGap = y - PAGE.margins.top - sysFmt.height();
+                                //PAGE.sysGap = y - PAGE.margins.top;
                                 System.out.println("Page E-E sysGap =" + sysGap);
                             }
                             PAGE.addNewSys();
@@ -90,7 +90,7 @@ public class Page extends Mass {
     }
     //---------------Margins-----------//
     public static class Margins{
-        private static int M = 50;
+        private static int M = UC.defaultPageMargin;
         public int top = M,left = M, by = UC.initialWindowHeight - M,right = UC.initialWindowWidth - M;
 
     }

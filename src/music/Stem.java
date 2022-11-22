@@ -28,6 +28,7 @@ public class Stem extends Duration implements  Comparable<Stem>{
             h.unStem();
             h.stem = this;
         }
+
         this.heads = heads;
         sys.stems.addStem(this);
         addReaction(new Reaction("E-E") {// increment flag and stem
@@ -127,9 +128,13 @@ public class Stem extends Duration implements  Comparable<Stem>{
         return heads.get(!isUp ? heads.size() - 1 : 0);
     }
     public int yFirstHead(){
+        if(heads.size() == 0){
+            return 100;
+        }
         Head h = firstHead();
         return h.staff.yLine(h.line);
     }
+
     public int yBeamEnd(){
         if (heads.size() == 0){
             return 200;//should never happen
@@ -162,12 +167,33 @@ public class Stem extends Duration implements  Comparable<Stem>{
         return !isUp ? yBeamEnd() : yFirstHead();
     }
     public int x(){
+        if(heads.size() == 0){
+            return 100;
+        }
         Head h = firstHead();
         return h.time.x + (isUp ? h.w() : 0);
     }
     public void deleteStem(){
+        if (heads.size() != 0){
+            System.out.println("delete stem that has heads on it");
+        }
+        if(beam != null){
+            beam.removeStem(this);
+        }
         deleteMass();
         sys.stems.remove(this);
+    }
+    @Override
+    public void decFlag(){
+        if(nFlag > -2){
+            nFlag--;
+        }
+        if(nFlag <= 0 && beam != null){
+            //for(Stem s:beam.stems){
+                //beam.removeStem(s);
+            //}
+            beam.deletedBeam();
+        }
     }
     public void setWrongSides(){
         Collections.sort(heads);

@@ -27,7 +27,7 @@ public class Head extends Mass implements Comparable<Head>{
 //        int top = staff.yTop() - H;
 //        line = (y - top + H/2)/H - 1;
         this.line = staff.lineOfY(y);
-        System.out.println("line" + line);
+        System.out.println("hashcode  :" + hashCode());
         time.heads.add(this);
         addReaction(new Reaction("S-S") {
             @Override
@@ -90,7 +90,8 @@ public class Head extends Mass implements Comparable<Head>{
     public int w(){return 24 * staff.fmt.H/10;}
     public void show(Graphics g){
         int H = staff.fmt.H;
-        g.setColor(wrongSide ? Color.red :Color.BLACK);
+        g.setColor(stem == null ? Color.red :Color.BLACK);
+
         (forcedGlyph != null ? forcedGlyph : normalGlyph()).showAt(g,H,x(),y());
         if (stem != null){
             int off = UC.augDotOffset, sp = UC.augDotSpace;

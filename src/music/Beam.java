@@ -125,6 +125,12 @@ public class Beam extends Mass {
     }
 
 
-
-
+    public void removeStem(Stem stem) {
+        if(stem == first() || stem == last()){
+            deletedBeam();
+        }else{
+            stems.remove(stem);
+            stems.sort();
+        }
+    }
 }

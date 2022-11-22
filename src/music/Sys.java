@@ -40,7 +40,6 @@ public class Sys extends Mass {
                }
                //System.out.println("Sys E-E passed fastReject");
                ArrayList<Stem> temp = stems.allInterSectors(x1,y1,x2,y2);
-               //System.out.println("all intersectors " + temp.size());
                if(temp.size() < 2){
                    return UC.noBid;
                }
